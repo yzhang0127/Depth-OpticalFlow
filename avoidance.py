@@ -10,12 +10,12 @@ from MiDasDepth import getDepth
 #model_type = "DPT_Large"     # MiDaS v3 - Large     (highest accuracy, slowest inference speed)
 #model_type = "DPT_Hybrid"   # MiDaS v3 - Hybrid    (medium accuracy, medium inference speed)
 model_type = "MiDaS_small"  # MiDaS v2.1 - Small   (lowest accuracy, highest inference speed)
-
 midas = torch.hub.load("intel-isl/MiDaS", model_type, trust_repo=True)
-
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 midas.to(device)
 midas.eval()
+
+
 
 midas_transforms = torch.hub.load("intel-isl/MiDaS", "transforms")
 
@@ -50,6 +50,7 @@ while cap.isOpened():
 
     #get depth info
     depth = getDepth(transform,frame,midas)
+
     # get average depths in four quadrants in the depth map
     tl, tr, br, bl = utils.getMatrixAvg(depth)
     #subtract all pixels that is far away
